@@ -128,6 +128,8 @@
             border-radius: 2rem;
             text-decoration: none;
             font-weight: bold;
+            display: inline-block;
+            text-align: center;
         }
 
         .carousel-container {
@@ -197,7 +199,7 @@
         }
 
         .lock-overlay {
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.7);
             position: fixed;
             top: 0;
             left: 0;
@@ -262,6 +264,7 @@
             border-radius: 2rem;
             margin-bottom: 1rem;
             display: inline-block;
+            cursor: pointer;
         }
 
         .official-link {
@@ -307,6 +310,7 @@
             background: #ffaa00;
             color: #1e1e2f;
             font-weight: bold;
+            border: none;
         }
     </style>
 </head>
@@ -327,29 +331,27 @@
     </header>
 
     <div id="sponsorTop" class="sponsor">
-        <img id="sponsorTopImg" class="sponsor-img" src="https://picsum.photos/id/20/120/60" alt="Sponsor">
-        <a id="sponsorTopLink" href="#" target="_blank" class="sponsor-btn">Visit Site</a>
+        <img id="sponsorTopImg" class="sponsor-img" src="https://picsum.photos/id/10/120/60" alt="Amazing Thailand">
+        <a id="sponsorTopLink" href="https://www.tourismthailand.org" target="_blank" class="sponsor-btn">Visit Official Site</a>
     </div>
 
-    <!-- メインコンテンツ (無料版は6件のみ・有料版で12件) -->
     <div id="mainView">
         <div class="carousel-container">
             <div class="carousel-wrapper" id="carouselWrapper">
                 <div class="carousel-slide" id="slide1"></div>
-                <div class="carousel-slide" id="slide2" class="hidden"></div>
+                <div class="carousel-slide" id="slide2"></div>
             </div>
             <div class="carousel-nav" id="carouselNav"></div>
         </div>
-        <!-- アップグレード促進バナー（無料時のみ表示） -->
         <div id="upgradeTeaser" class="sponsor" style="justify-content: center; text-align: center;">
-            <span>🔒 残り6つの観光地と詳細アクセス情報はプレミアム版でご覧いただけます</span>
-            <button id="showPaypalModalBtn" class="upgrade-btn">⭐ プレミアムにアップグレード (PayPal)</button>
+            <span>🔒 6 more places & detailed access info available in Premium</span>
+            <button id="showPaypalModalBtn" class="upgrade-btn">⭐ Upgrade to Premium (PayPal)</button>
         </div>
     </div>
 
     <div id="sponsorBottom" class="sponsor">
-        <img id="sponsorBottomImg" class="sponsor-img" src="https://picsum.photos/id/26/120/60" alt="Sponsor">
-        <a id="sponsorBottomLink" href="#" target="_blank" class="sponsor-btn">Visit Site</a>
+        <img id="sponsorBottomImg" class="sponsor-img" src="https://picsum.photos/id/26/120/60" alt="Phuket Tourism">
+        <a id="sponsorBottomLink" href="https://www.phuket.net" target="_blank" class="sponsor-btn">Phuket Official Guide</a>
     </div>
 
     <div class="map-frame">
@@ -363,50 +365,121 @@
     </footer>
 </div>
 
-<!-- PayPal JavaScript SDK (後で自分のClient IDに置き換え) -->
-<script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=USD"></script>
+<!-- PayPal JavaScript SDK (Hosted Buttons 対応) -->
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&components=hosted-buttons&currency=USD"></script>
 
 <script>
-    // ======================= 多言語データ =======================
-    const translations = {
-        en: { title: "✨ Thailand Travel Guide", sponsorBtn: "Visit Site", backBtn: "← Back", officialSite: "Official Website", transportLabel: "🚆 Access", stationLabel: "📍 Station", attractionLabel: "⭐ Details", upgradeBtn: "⭐ Upgrade to Premium (PayPal)", upgradeTeaser: "🔒 6 more places & detailed info available in Premium", freeBadge: "🆓 Free", premiumBadge: "⭐ Premium" },
-        zh: { title: "✨ 泰国旅游指南", sponsorBtn: "访问官网", backBtn: "← 返回", officialSite: "官方网站", transportLabel: "🚆 交通", stationLabel: "📍 车站", attractionLabel: "⭐ 详情", upgradeBtn: "⭐ 升级到高级版 (PayPal)", upgradeTeaser: "🔒 另外6个景点和详细信息仅在高级版提供", freeBadge: "🆓 免费版", premiumBadge: "⭐ 高级版" },
-        th: { title: "✨ คู่มือท่องเที่ยวไทย", sponsorBtn: "เว็บไซต์ทางการ", backBtn: "← กลับ", officialSite: "เว็บไซต์ทางการ", transportLabel: "🚆 การเดินทาง", stationLabel: "📍 สถานี", attractionLabel: "⭐ รายละเอียด", upgradeBtn: "⭐ อัปเกรดเป็นพรีเมียม (PayPal)", upgradeTeaser: "🔒 อีก 6 สถานที่และข้อมูลเพิ่มเติมในเวอร์ชันพรีเมียม", freeBadge: "🆓 ฟรี", premiumBadge: "⭐ พรีเมียม" },
-        ja: { title: "✨ タイ旅行ガイド", sponsorBtn: "公式サイトへ", backBtn: "← 戻る", officialSite: "公式サイト", transportLabel: "🚆 アクセス", stationLabel: "📍 最寄り駅", attractionLabel: "⭐ 詳細", upgradeBtn: "⭐ プレミアムにアップグレード (PayPal)", upgradeTeaser: "🔒 残り6スポットと詳細情報はプレミアム版で", freeBadge: "🆓 無料版", premiumBadge: "⭐ プレミアム" }
-    };
+    // ======================= 完全な12スポットのデータ（多言語詳細付き） =======================
+    const fullPlaces = [
+        { id:0, img:"https://picsum.photos/id/104/400/300", title:{en:"Wat Phra Kaew (Emerald Buddha)",zh:"玉佛寺",th:"วัดพระแก้ว",ja:"ワット・プラケオ（エメラルド仏）"},
+          shortDesc:{en:"The most sacred temple in Thailand.",zh:"泰国最神圣的寺庙。",th:"วัดที่ศักดิ์สิทธิ์ที่สุดของไทย",ja:"タイで最も神聖な寺院"},
+          detail:{en:"Located within Grand Palace complex. Dress code strictly enforced. Marvel at the Emerald Buddha carved from a single jade stone.",zh:"位于大皇宫内。着装要求严格。欣赏由整块翡翠雕刻而成的玉佛。",th:"ตั้งอยู่ในเขตพระราชวังใหญ่ ต้องแต่งกายสุภาพ ชมพระแก้วมรกต",ja:"大宮殿の敷地内。服装規定あり。ヒスイの一塊から彫られたエメラルド仏を鑑賞。"},
+          station:{en:"MRT Sanam Chai + 10 min walk",zh:"MRT Sanam Chai站 步行10分钟",th:"MRT สนามไชย เดิน 10 นาที",ja:"MRTサナームチャイ駅 徒歩10分"},
+          url:"https://www.royalgrandpalace.th/" },
+        { id:1, img:"https://picsum.photos/id/106/400/300", title:{en:"Wat Pho (Reclining Buddha)",zh:"卧佛寺",th:"วัดโพธิ์",ja:"ワット・ポー（涅槃仏）"},
+          shortDesc:{en:"Giant reclining Buddha & Thai massage school.",zh:"巨大卧佛和泰式按摩学校。",th:"พระนอนขนาดใหญ่และโรงเรียนนวดแผนไทย",ja:"巨大な涅槃仏とタイ古式マッサージ学校"},
+          detail:{en:"46m long gold-plated reclining Buddha. Birthplace of traditional Thai massage. Get a massage after temple visit.",zh:"46米长金箔卧佛。泰式按摩的发源地。参观后可以体验按摩。",th:"พระนอนทองคำยาว 46 เมตร แหล่งกำเนิดนวดแผนไทย นวดหลังวัด",ja:"全長46mの金箔涅槃仏。タイ古式マッサージ発祥の地。寺院見学後にマッサージを。"},
+          station:{en:"MRT Sanam Chai / Ferry to Tha Tien",zh:"MRT Sanam Chai站 / 渡轮至Tha Tien",th:"MRT สนามไชย / เรือถึงท่าเตียน",ja:"MRTサナームチャイ駅 / フェリーでTha Tienへ"},
+          url:"https://www.watpho.com/" },
+        { id:2, img:"https://picsum.photos/id/96/400/300", title:{en:"Chatuchak Market",zh:"乍都乍周末市场",th:"ตลาดนัดจตุจักร",ja:"チャトゥチャック市場"},
+          shortDesc:{en:"Weekend mega market (15,000+ stalls)",zh:"周末巨型市场（超过15000个摊位）",th:"ตลาดนัดสุดสัปดาห์ 15,000+ ร้าน",ja:"週末限定の巨大マーケット（15,000店以上）"},
+          detail:{en:"Only open Sat-Sun. Everything from vintage clothes to local art. Best street food in Bangkok.",zh:"仅周末开放。从复古服装到本地艺术品应有尽有。曼谷最好的街头美食。",th:"เปิดเสาร์-อาทิตย์ ทุกอย่างตั้งแต่เสื้อผ้าวินเทจถึงงานศิลปะ อาหารริมทางที่ดีที่สุดในกรุงเทพฯ",ja:"土曜・日曜のみ営業。ビンテージ服から地元アートまで。バンコク最高の屋台。"},
+          station:{en:"BTS Mo Chit / MRT Chatuchak Park",zh:"BTS Mo Chit站 / MRT Chatuchak Park站",th:"BTS หมอชิต / MRT สวนจตุจักร",ja:"BTSモーチット駅 / MRTチャトゥチャックパーク駅"},
+          url:"https://www.chatuchakmarket.org/" },
+        { id:3, img:"https://picsum.photos/id/30/400/300", title:{en:"Ayutthaya Historical Park",zh:"大城历史公园",th:"อุทยานประวัติศาสตร์อยุธยา",ja:"アユタヤ歴史公園"},
+          shortDesc:{en:"UNESCO World Heritage ancient capital",zh:"联合国教科文组织世界遗产古都",th:"เมืองหลวงเก่า มรดกโลก",ja:"ユネスコ世界遺産の古都"},
+          detail:{en:"1.5h train from Bangkok. Rent a bicycle to explore Wat Mahathat (Buddha head in tree roots).",zh:"从曼谷乘火车1.5小时。租自行车游览玛哈泰寺（树根中的佛头）。",th:"รถไฟ 1.5 ชม. จากกรุงเทพฯ ปั่นจักรยานชมวัดมหาธาตุ (พระพักตร์ในรากไม้)",ja:"バンコクから電車で1.5時間。自転車でワット・マハタート（木の根に絡まった仏頭）を巡る。"},
+          station:{en:"Ayutthaya Railway Station",zh:"大城火车站",th:"สถานีรถไฟอยุธยา",ja:"アユタヤ駅"},
+          url:"https://www.ayutthaya-history.com/" },
+        { id:4, img:"https://picsum.photos/id/152/400/300", title:{en:"Chiang Mai Old City",zh:"清迈古城",th:"เมืองเก่าเชียงใหม่",ja:"チェンマイ旧市街"},
+          shortDesc:{en:"Ancient walls, temples & night bazaar",zh:"古城墙、寺庙和夜市",th:"กำแพงเมืองเก่า วัด และตลาดกลางคืน",ja:"古い城壁、寺院、ナイトバザール"},
+          detail:{en:"Walk or rent a bicycle. Must-see: Wat Phra Singh, Wat Chedi Luang. Sunday Walking Street is huge.",zh:"步行或租自行车。必看：帕辛寺、柴迪隆寺。周日夜市规模巨大。",th:"เดินหรือปั่นจักรยาน ต้องดู: วัดพระสิงห์ วัดเจดีย์หลวง ถนนคนเดินวันอาทิตย์ใหญ่",ja:"徒歩または自転車。必見：ワット・プラシン、ワット・チェディルアン。日曜歩行者天国は圧巻。"},
+          station:{en:"Chiang Mai Airport + city songthaew",zh:"清迈机场+红色双条车",th:"สนามบินเชียงใหม่ + สองแถวแดง",ja:"チェンマイ空港 + 市内ソンテウ"},
+          url:"https://www.tourismchiangmai.org/" },
+        { id:5, img:"https://picsum.photos/id/29/400/300", title:{en:"Doi Suthep",zh:"素贴山双龙寺",th:"ดอยสุเทพ",ja:"ドイ・ステプ"},
+          shortDesc:{en:"Mountain temple with golden pagoda",zh:"山顶金塔寺庙",th:"วัดบนดอยที่มีเจดีย์ทองคำ",ja:"黄金の仏塔がある山頂寺院"},
+          detail:{en:"From Chiang Mai, take songthaew from Pratu Chang Phuak. 306 steps or cable car. Panoramic city view.",zh:"从清迈古城乘坐双条车。306级台阶或缆车。城市全景。",th:"จากเชียงใหม่นั่งสองแถวจากประตูช้างเผือก 306 ขั้นหรือกระเช้า วิวเมืองพาโนรามา",ja:"チェンマイからチャンプアック門発のソンテウ。306段の階段またはケーブルカー。絶景。"},
+          station:{en:"Songthaew from Chang Phuak Gate",zh:"昌卜克门乘双条车",th:"สองแถวจากประตูช้างเผือก",ja:"チャンプアック門からソンテウ"},
+          url:"https://www.doisuthep.com/" },
+        { id:6, img:"https://picsum.photos/id/163/400/300", title:{en:"Patong Beach, Phuket",zh:"普吉岛芭东海滩",th:"หาดป่าตอง ภูเก็ต",ja:"パトンビーチ（プーケット）"},
+          shortDesc:{en:"Lively beach with water sports & nightlife",zh:"热闹海滩，水上活动和夜生活",th:"ชายหาดคึกคัก กีฬาทางน้ำ กลางคืนสนุก",ja:"ウォータースポーツとナイトライフが楽しめる賑やかなビーチ"},
+          detail:{en:"Jet ski, banana boat, and Bangla Road for parties. Best for first-time visitors to Phuket.",zh:"摩托艇、香蕉船和邦古拉街派对。适合第一次来普吉岛的游客。",th:"เจ็ทสกี เรือกล้วย และถนนบางลาสำหรับปาร์ตี้ เหมาะสำหรับผู้มาเยือนภูเก็ตครั้งแรก",ja:"ジェットスキー、バナナボート、パーティーならバングラ通り。プーケット初訪問者に最適。"},
+          station:{en:"Phuket Airport + taxi (45 min)",zh:"普吉机场+出租车45分钟",th:"สนามบินภูเก็ต + แท็กซี่ 45 นาที",ja:"プーケット空港 + タクシーで45分"},
+          url:"https://www.phuket.net/beaches/patong-beach/" },
+        { id:7, img:"https://picsum.photos/id/130/400/300", title:{en:"Phi Phi Islands",zh:"皮皮岛",th:"หมู่เกาะพีพี",ja:"ピピ諸島"},
+          shortDesc:{en:"Crystal clear water, Maya Bay",zh:"清澈海水，玛雅湾",th:"น้ำใสมาก อ่าวมาหยา",ja:"透き通った海、マヤ湾"},
+          detail:{en:"Speedboat tour from Phuket or Krabi. Snorkeling, colorful fish, limestone cliffs. Maya Bay is currently periodically closed for recovery – check before travel.",zh:"从普吉或甲米坐快艇。浮潜、彩色鱼群、石灰岩悬崖。玛雅湾定期关闭修复，出行前请查询。",th:"เรือสปีดโบ๊ทจากภูเก็ต ดำน้ำตื้น ปลาสีสัน หน้าผาหินปูน อ่าวมาหยาปิดฟื้นฟูเป็นระยะ ตรวจสอบก่อนเดินทาง",ja:"プーケットまたはクラビからスピードボート。シュノーケリング、色とりどりの魚、石灰岩の崖。マヤ湾は定期的に閉鎖あり、事前確認を。"},
+          station:{en:"Rassada Pier (Phuket) + speedboat",zh:"普吉Rassada码头+快艇",th:"ท่าเรือรัษฎา + สปีดโบ๊ท",ja:"ラッサダー埠頭（プーケット）+ スピードボート"},
+          url:"https://www.phiphiisland.com/" },
+        { id:8, img:"https://picsum.photos/id/94/400/300", title:{en:"Phuket Old Town",zh:"普吉镇老街",th:"เมืองเก่าภูเก็ต",ja:"プーケット旧市街"},
+          shortDesc:{en:"Sino-Portuguese architecture & cafes",zh:"中葡风格建筑和咖啡店",th:"สถาปัตยกรรมจีน-โปรตุเกส ร้านกาแฟ",ja:"シノ・ポルトガル様式の建築とカフェ"},
+          detail:{en:"Colorful heritage buildings. Sunday Walking Street Market has amazing street food. Great for Instagram.",zh:"多彩的遗产建筑。周日夜市有很棒的小吃。适合拍照。",th:"อาคารมรดกสีสันสดใส ตลาดนัดวันอาทิตย์มีอาหารข้างทางที่ยอดเยี่ยม เหมาะแก่การถ่ายรูป",ja:"カラフルな歴史的建造物。日曜歩行者天国マーケットの屋台は絶品。インスタ映え抜群。"},
+          station:{en:"Local bus or taxi from beaches",zh:"从海滩坐当地巴士或出租车",th:"รถประจำทางหรือแท็กซี่จากหาด",ja:"ビーチから地元バスまたはタクシー"},
+          url:"https://oldtownphuket.com/" },
+        { id:9, img:"https://picsum.photos/id/42/400/300", title:{en:"Damnoen Saduak Floating Market",zh:"丹嫩沙多水上市场",th:"ตลาดน้ำดำเนินสะดวก",ja:"ダムヌン・サドアク水上マーケット"},
+          shortDesc:{en:"Paddle boats selling fresh food",zh:"划船售卖新鲜食物",th:"เรือ paddles ขายอาหารสด",ja:"新鮮な料理を売る手漕ぎボート"},
+          detail:{en:"Day trip from Bangkok (1.5h drive). Best early morning to avoid crowds. Hire long-tail boat (negotiate price).",zh:"从曼谷出发1.5小时车程。建议清晨去避开人群。租长尾船（议价）。",th:"ทริปวันเดียวจากกรุงเทพฯ (ขับรถ 1.5 ชม.) ดีที่สุดในช่วงเช้าเพื่อหลีกเลี่ยงฝูงชน เช่าเรือหางยาว (ต่อรองราคา)",ja:"バンコクから日帰り（車で1.5時間）。混雑避けるなら早朝がベスト。長尾船をチャーター（価格交渉）。"},
+          station:{en:"Minivan from Southern Bus Terminal",zh:"南部汽车站小巴",th:"รถตู้จากสถานีขนส่งสายใต้",ja:"南部バスターミナルからミニバン"},
+          url:"https://www.damnoensaduak.com/" },
+        { id:10, img:"https://picsum.photos/id/39/400/300", title:{en:"Khao Soi (Chiang Mai dish)",zh:"清迈咖喱面",th:"ข้าวซอยเชียงใหม่",ja:"カオソーイ（チェンマイ料理）"},
+          shortDesc:{en:"Northern Thai curry noodle soup",zh:"泰北咖喱面汤",th:"แกงกะหรี่เส้น ภาคเหนือ",ja:"タイ北部のカレー風味の麺料理"},
+          detail:{en:"Try at Khao Soi Khun Yai (famous local spot). Rich coconut curry, crispy noodles on top. Best lunch.",zh:"在Khao Soi Khun Yai（著名本地餐厅）品尝。浓郁的椰奶咖喱，顶部有脆面。最佳午餐。",th:"ลองที่ข้าวซอยคุณยาย ร้านดัง กะทิเข้มข้น เส้นกรอบด้านบน อาหารกลางวันที่สุดยอด",ja:"カオソーイ・クンヤイ（地元で有名）で試す。濃厚なココナッツカレー、上に揚げ麺。最高のランチ。"},
+          station:{en:"Nimman area or Old City",zh:"宁曼路或古城区域",th:"ย่านนิมมาน หรือเมืองเก่า",ja:"ニマン地区または旧市街"},
+          url:"https://www.chiangmaicitylife.com/food/khao-soi/" },
+        { id:11, img:"https://picsum.photos/id/431/400/300", title:{en:"Chao Phraya River Cruise",zh:"湄南河游船",th:"ล่องเรือเจ้าพระยา",ja:"チャオプラヤ川クルーズ"},
+          shortDesc:{en:"Dinner cruise with temple lights",zh:"夜景晚餐船，看寺庙灯光",th:"อาหารค่ำลอยน้ำ ชมวัดแสงสี",ja:"寺院のライトアップを楽しむディナークルーズ"},
+          detail:{en:"Boards from Saphan Taksin pier. Evening cruise includes Thai buffet, live music, and views of Wat Arun lit up.",zh:"从Saphan Taksin码头登船。晚间巡航包括泰式自助餐、现场音乐和黎明寺灯光。",th:"ขึ้นเรือที่ท่าสะพานตากสิน เรือตอนเย็นรวมบุฟเฟ่ต์ไทย ดนตรีสด และชมวัดอรุณสว่าง",ja:"サパーンタクシン桟橋から出発。夜のクルーズはタイ料理ビュッフェ、生演奏、ライトアップされたワット・アルンが楽しめます。"},
+          station:{en:"BTS Saphan Taksin",zh:"BTS Saphan Taksin站",th:"BTS สะพานตากสิน",ja:"BTSサパーンタクシン駅"},
+          url:"https://www.chaophrayacruise.com/" }
+    ];
 
-    // 完全な12個のデータ（詳細含む）
-    const fullPlaces = [ ... ];  // 省略せずに全てのデータをここに入れる（字数制限のため後述の完全版参照）
-
-    // 無料用の簡素データ (最初の6個のみ、説明も簡略)
+    // 無料版では最初の6件を簡素に表示
     const freePlaces = fullPlaces.slice(0,6).map(p => ({
         ...p,
-        shortDesc: { en: p.shortDesc.en?.substring(0,60)+"...", zh: p.shortDesc.zh?.substring(0,50)+"...", th: p.shortDesc.th?.substring(0,50)+"...", ja: p.shortDesc.ja?.substring(0,50)+"..." },
-        detail: { en: "Premium feature. Pay to unlock full details.", zh: "高级功能。付费解锁完整信息。", th: "ฟีเจอร์พรีเมียม จ่ายเพื่อปลดล็อก", ja: "プレミアム機能。支払いで完全詳細を解放。" }
+        shortDesc: { en: p.shortDesc.en.substring(0,60)+"...", zh: p.shortDesc.zh.substring(0,50)+"...", th: p.shortDesc.th.substring(0,50)+"...", ja: p.shortDesc.ja.substring(0,50)+"..." },
+        detail: { en: "🔒 Premium feature. Pay to unlock full details (access, stations, maps).", zh: "🔒 高级功能。付费解锁完整信息（交通、车站、地图）。", th: "🔒 ฟีเจอร์พรีเมียม จ่ายเพื่อปลดล็อกรายละเอียดเต็ม", ja: "🔒 プレミアム機能。支払いで完全詳細（アクセス、駅、地図）を解放。" }
     }));
+
+    // ======================= 多言語UI =======================
+    const translations = {
+        en: { title: "✨ Thailand Travel Guide", sponsorBtn: "Visit Site", backBtn: "← Back", officialSite: "Official Website", upgradeTeaser: "🔒 6 more places & detailed access info available in Premium", upgradeBtn: "⭐ Upgrade to Premium (PayPal)", freeBadge: "🆓 Free", premiumBadge: "⭐ Premium" },
+        zh: { title: "✨ 泰国旅游指南", sponsorBtn: "访问官网", backBtn: "← 返回", officialSite: "官方网站", upgradeTeaser: "🔒 另外6个景点和详细信息仅在高级版提供", upgradeBtn: "⭐ 升级到高级版 (PayPal)", freeBadge: "🆓 免费版", premiumBadge: "⭐ 高级版" },
+        th: { title: "✨ คู่มือท่องเที่ยวไทย", sponsorBtn: "เว็บไซต์ทางการ", backBtn: "← กลับ", officialSite: "เว็บไซต์ทางการ", upgradeTeaser: "🔒 อีก 6 สถานที่และข้อมูลเพิ่มเติมในเวอร์ชันพรีเมียม", upgradeBtn: "⭐ อัปเกรดเป็นพรีเมียม (PayPal)", freeBadge: "🆓 ฟรี", premiumBadge: "⭐ พรีเมียม" },
+        ja: { title: "✨ タイ旅行ガイド", sponsorBtn: "公式サイトへ", backBtn: "← 戻る", officialSite: "公式サイト", upgradeTeaser: "🔒 残り6スポットと詳細アクセス情報はプレミアム版で", upgradeBtn: "⭐ プレミアムにアップグレード (PayPal)", freeBadge: "🆓 無料版", premiumBadge: "⭐ プレミアム" }
+    };
 
     let currentLang = 'en';
     let currentSlide = 0;
     let selectedPlace = null;
     let isPremium = localStorage.getItem('thailand_premium') === 'true';
 
-    // 表示するデータの選択
+    // 決済成功時のリダイレクト対応
+    function checkPaymentSuccess() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('payment') === 'success') {
+            localStorage.setItem('thailand_premium', 'true');
+            isPremium = true;
+            // パラメータを除去して再読み込み
+            window.history.replaceState({}, document.title, window.location.pathname);
+            location.reload();
+        }
+    }
+
     function getCurrentPlaces() {
         return isPremium ? fullPlaces : freePlaces;
     }
 
     function updateUIByPremium() {
         const badge = document.getElementById('premiumStatusBadge');
-        badge.innerText = isPremium ? translations[currentLang].premiumBadge : translations[currentLang].freeBadge;
+        badge.innerText = translations[currentLang][isPremium ? 'premiumBadge' : 'freeBadge'];
         badge.style.background = isPremium ? '#ffaa44' : '#888';
-        document.getElementById('upgradeTeaser').style.display = isPremium ? 'none' : 'flex';
-        // カルーセルのスライド数を調整（無料時は1スライドのみ）
-        const slide2 = document.getElementById('slide2');
+        const teaserDiv = document.getElementById('upgradeTeaser');
+        teaserDiv.style.display = isPremium ? 'none' : 'flex';
         if (!isPremium) {
-            slide2.classList.add('hidden');
+            document.getElementById('slide2').classList.add('hidden');
             document.getElementById('carouselNav').style.display = 'none';
         } else {
-            slide2.classList.remove('hidden');
+            document.getElementById('slide2').classList.remove('hidden');
             document.getElementById('carouselNav').style.display = 'flex';
         }
         renderCarousel();
@@ -496,20 +569,24 @@
         mainView.classList.add('hidden');
         detailDiv.classList.remove('hidden');
         const trans = translations[currentLang];
-        const isFullDetail = isPremium || (id < 6); // 無料でも最初の6件は簡素なdetailしか見せない
-        detailDiv.innerHTML = `
+        let detailHtml = `
             <div class="detail-page">
                 <button class="back-btn" id="backToListBtn">${trans.backBtn}</button>
                 <img class="detail-img" src="${place.img}" alt="${place.title[currentLang]}">
                 <h2>${place.title[currentLang]}</h2>
                 <p><strong>⭐</strong> ${place.shortDesc[currentLang]}</p>
-                ${isPremium ? `
-                    <p><strong>${trans.attractionLabel}</strong><br> ${place.detail[currentLang]}</p>
-                    <p><strong>${trans.stationLabel}</strong><br> ${place.station[currentLang]}</p>
-                    <a href="${place.url}" target="_blank" class="official-link">${trans.officialSite} ↗</a>
-                ` : `<p style="color:var(--accent); margin-top:1rem;">🔓 ${translations[currentLang].upgradeTeaser}</p><button id="upgradeFromDetail" class="upgrade-btn">${translations[currentLang].upgradeBtn}</button>`}
-            </div>
         `;
+        if (isPremium) {
+            detailHtml += `
+                <p><strong>⭐ Details</strong><br> ${place.detail[currentLang]}</p>
+                <p><strong>📍 Nearest station / transport</strong><br> ${place.station[currentLang]}</p>
+                <a href="${place.url}" target="_blank" class="official-link">${trans.officialSite} ↗</a>
+            `;
+        } else {
+            detailHtml += `<p style="color:var(--accent); margin-top:1rem;">🔓 ${trans.upgradeTeaser}</p><button id="upgradeFromDetail" class="upgrade-btn">${trans.upgradeBtn}</button>`;
+        }
+        detailHtml += `</div>`;
+        detailDiv.innerHTML = detailHtml;
         document.getElementById('backToListBtn').onclick = () => {
             detailDiv.classList.add('hidden');
             mainView.classList.remove('hidden');
@@ -519,54 +596,30 @@
         if (upgradeBtn) upgradeBtn.onclick = () => showPaypalModal();
     }
 
-    // PayPal モーダル
     function showPaypalModal() {
         const modalDiv = document.createElement('div');
         modalDiv.className = 'lock-overlay';
         modalDiv.innerHTML = `
             <div class="paypal-modal">
-                <h3>💎 プレミアムアップグレード</h3>
-                <p>✔ 全12スポットの詳細アクセス<br>✔ 交通機関・最寄り駅情報<br>✔ 公式サイトリンク</p>
-                <div id="paypal-button-container"></div>
-                <button id="closePaypalModal" style="margin-top:1rem;">キャンセル</button>
+                <h3>💎 Unlock Premium</h3>
+                <p>✔ Full 12 places<br>✔ Transport & station info<br>✔ Official links & maps</p>
+                <div id="paypal-hosted-button-container"></div>
+                <button id="closePaypalModal" style="margin-top:1rem;">Cancel</button>
             </div>
         `;
         document.body.appendChild(modalDiv);
         document.getElementById('closePaypalModal').onclick = () => modalDiv.remove();
 
-        // PayPal ボタンレンダリング
-        if (window.paypal) {
-            window.paypal.Buttons({
-                createOrder: function(data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: { value: '4.99', currency_code: 'USD' },
-                            description: 'Thailand Travel Guide - Premium Unlock'
-                        }]
-                    });
-                },
-                onApprove: function(data, actions) {
-                    return actions.order.capture().then(function(details) {
-                        localStorage.setItem('thailand_premium', 'true');
-                        isPremium = true;
-                        modalDiv.remove();
-                        updateUIByPremium();
-                        alert('Thank you! Premium features unlocked.');
-                        window.location.reload(); // 完全再読み込みで確実に反映
-                    });
-                },
-                onError: function(err) {
-                    console.error(err);
-                    alert('PayPal error. Please try again.');
-                    modalDiv.remove();
-                }
-            }).render('#paypal-button-container');
+        // ホステッドボタンをレンダリング
+        if (window.paypal && window.paypal.HostedButtons) {
+            window.paypal.HostedButtons({
+                hostedButtonId: "WH3HTQG46AHBG"
+            }).render("#paypal-hosted-button-container");
         } else {
-            modalDiv.innerHTML += '<p style="color:red;">PayPal SDK not loaded. Check client ID.</p>';
+            modalDiv.innerHTML += '<p style="color:red;">⚠️ PayPal Hosted Buttons SDK not loaded. Check your client ID.</p>';
         }
     }
 
-    // 言語・テーマ
     function updateLanguage() {
         document.getElementById('page-title').innerText = translations[currentLang].title;
         document.querySelectorAll('.sponsor-btn').forEach(btn => btn.innerText = translations[currentLang].sponsorBtn);
@@ -605,11 +658,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        // スポンサー設定
-        document.getElementById('sponsorTopImg').src = "https://picsum.photos/id/10/120/60";
-        document.getElementById('sponsorTopLink').href = "https://www.tourismthailand.org";
-        document.getElementById('sponsorBottomImg').src = "https://picsum.photos/id/12/120/60";
-        document.getElementById('sponsorBottomLink').href = "https://www.thailandfestival.com";
+        checkPaymentSuccess(); // リダイレクト後の処理
         document.getElementById('showPaypalModalBtn').onclick = showPaypalModal;
         initCarouselScroll();
         initTheme();
